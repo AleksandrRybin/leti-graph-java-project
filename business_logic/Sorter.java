@@ -6,8 +6,10 @@ import java.util.LinkedList;
 import java.util.ArrayDeque;
 
 public enum STATE {
+    INIT,
     WORK,
-    END
+    END,
+    ERROR
 }
 
 public class Sorter {
@@ -18,9 +20,16 @@ public class Sorter {
     private boolean[] visited;
     private current;
     private from;
+    private STATE state;
 
 
     public Sorter(Graph graph, Painter painter) {
+        Checker checker = new Checker(graph);
+        if (checker.CheckCycle()) {
+            this.state = STATE.ERROR;
+            throw new IllegalArgumentException();
+        }
+
         this.indMatrix = graph.getIndMatrix();
         this.painter = painter;
         this.res = new LinkedList<>();
@@ -28,11 +37,7 @@ public class Sorter {
         this.visited = new boolean[indMatrix.length];
         this.current = 0;
         this.from = -1;
-
-        Checker checker = new Checker(this);
-        if (checker.CheckCycle()) {
-            throw new IllegalArgumentException();
-        }
+        this.state = STATE.INIT;
 
         //TODO painter.init(graph);
     }
@@ -42,13 +47,18 @@ public class Sorter {
         return res;
     }
 
-    public STATE nextStep() {
+    public STATE getState() {
+        return state;
+    }
+
+    public void nextStep() {
         //TODO painter.fillVertex(current);
 
-        for (int v = 0; v < indMatrix.length; v++) {
+        for (int v = 0; v < indMatrix[current].length; v++) {
             if (indMatrix[current][v] == 1) {
                 if (visited[v] == false) {
                     //TODO painter.fillEdge(current, v);
+                    //TODO painter.fillVertex(v);
 
                     stk.addLast(from);
                     stk.addLast(current);
@@ -56,7 +66,8 @@ public class Sorter {
                     from = current;
                     current = v;
 
-                    return WORK;
+                    state = STATE.WORK;
+                    return;
                 }
             }
         }
@@ -69,7 +80,7 @@ public class Sorter {
             current = stk.pollLast();
             from = stk.pollLast();
 
-            return WORK;
+            return;
         }
         else {
             for (int v = 0; v < indMatrix.length; v++) {
@@ -78,11 +89,12 @@ public class Sorter {
                     //TODO painter.fillVertex(v);
                     from = -1;
 
-                    return WORK;
+                    state = STATE.WORK;
+                    return;
                 }
             }
 
-            return END;
+            state = STATE.END;
         }
     }
 
