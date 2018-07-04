@@ -2,18 +2,20 @@ package business_logic;
 
 class DFSChecker {
     private final int[][] indMatrix;
+    private final boolean[] visited;
 
     public Checker(Graph graph) {
         this.indMatrix = graph.getIndMatrix();
+        visited = new boolean[indMatrix.length];
     }
 
-    private boolean dfs(boolean visited[], int u) {
+    private boolean dfs(int u) {
         visited[u] = true;
 
         for (int v : indMatrix[u]) {
             if (v != 0) {
                 if (visited[v] == false) {
-                    checkCycle(v);
+                    dfs(v);
                 }
                 else {
                     return true;
@@ -25,11 +27,9 @@ class DFSChecker {
     }
 
     private boolean CheckCycle() {
-        boolean[] visited = new boolean[indMatrix.length];
-
         for (int u = 0; u < indMatrix.length; u++) {
             if (visited[u] == false) {
-                if (dfs(visited, u)) {
+                if (dfs(u)) {
                     return true;
                 }
             }
