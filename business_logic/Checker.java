@@ -12,8 +12,8 @@ class DFSChecker {
     private boolean dfs(int u) {
         visited[u] = true;
 
-        for (int v : indMatrix[u]) {
-            if (v != 0) {
+        for (int v = 0; v < indMatrix[u].length; v++) {
+            if (indMatrix[u][v] != 0) {
                 if (visited[v] == false) {
                     dfs(v);
                 }
