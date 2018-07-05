@@ -1,10 +1,10 @@
 package business_logic;
 
-public class DFSChecker {
+public class Checker {
     private final int[][] indMatrix;
     private final boolean[] visited;
 
-    public DFSChecker(Graph graph) {
+    public Checker(Graph graph) {
         this.indMatrix = graph.getIndMatrix();
         visited = new boolean[indMatrix.length];
     }
@@ -26,7 +26,7 @@ public class DFSChecker {
         return false;
     }
 
-    boolean CheckCycle() {
+    public boolean CheckCycle() {
         for (int u = 0; u < indMatrix.length; u++) {
             if (visited[u] == false) {
                 if (dfs(u)) {
