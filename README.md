@@ -10,17 +10,17 @@
 
 #### Пример
 
-a b c d
+    a b c d
 
-b d c
+    b d c
 
-c e f
+    c e f
 
-d f
+    d f
 
-f
+    f
 
-e
+    e
 
 #### Результат
 
