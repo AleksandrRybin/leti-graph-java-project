@@ -1,6 +1,6 @@
 package business_logic;
 
-class DFSChecker {
+public class DFSChecker {
     private final int[][] indMatrix;
     private final boolean[] visited;
 
