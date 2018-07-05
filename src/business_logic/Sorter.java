@@ -56,7 +56,7 @@ public class Sorter {
             }
         }
 
-        painter.updateTable(current, sortNumber);
+        painter.updateTable(current, indMatrix.length + 1 - sortNumber);
         sortNumber++;
 
         if (from != -1) {
