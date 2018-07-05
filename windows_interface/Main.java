@@ -1,4 +1,4 @@
-package windows_interface
+package windows_interface;
 
 import javax.swing.*;
 import java.awt.*;
