@@ -1,33 +1,29 @@
 package business_logic;
 
-// TODO import draw.Painter;
 
+import paint_graph.GraphPainter;
+
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.ArrayDeque;
+import java.util.List;
 
-public enum STATE {
-    INIT,
-    WORK,
-    END,
-    ERROR
-}
 
 public class Sorter {
     private final int[][] indMatrix;
-    private final Painter painter;
-    private List<int> res;
-    private Deque<int> stk;
+    private final GraphPainter painter;
+    private List<Integer> res;
+    private Deque<Integer> stk;
     private boolean[] visited;
-    private current;
-    private from;
+    private int current;
+    private int from;
     private STATE state;
 
 
-    public Sorter(Graph graph, Painter painter) {
-        Checker checker = new Checker(graph);
+    public Sorter(Graph graph, GraphPainter painter) {
+        DFSChecker checker = new DFSChecker(graph);
         if (checker.CheckCycle()) {
             this.state = STATE.ERROR;
-            throw new IllegalArgumentException();
         }
 
         this.indMatrix = graph.getIndMatrix();
@@ -38,8 +34,6 @@ public class Sorter {
         this.current = 0;
         this.from = -1;
         this.state = STATE.INIT;
-
-        //TODO painter.init(graph);
     }
 
     public List getResult() {
@@ -52,13 +46,13 @@ public class Sorter {
     }
 
     public void nextStep() {
-        //TODO painter.fillVertex(current);
+        painter.fillVertex(current);
 
         for (int v = 0; v < indMatrix[current].length; v++) {
             if (indMatrix[current][v] == 1) {
                 if (visited[v] == false) {
-                    //TODO painter.fillEdge(current, v);
-                    //TODO painter.fillVertex(v);
+                    painter.fillEdge(current, v);
+                    painter.fillVertex(v);
 
                     stk.addLast(from);
                     stk.addLast(current);
@@ -75,8 +69,6 @@ public class Sorter {
         res.add(current);
 
         if (from != -1) {
-            //TODO painter.refillEdge(from, current)
-
             current = stk.pollLast();
             from = stk.pollLast();
 
@@ -86,7 +78,7 @@ public class Sorter {
             for (int v = 0; v < indMatrix.length; v++) {
                 if (visited[v] == false) {
                     current = v;
-                    //TODO painter.fillVertex(v);
+                    painter.fillVertex(v);
                     from = -1;
 
                     state = STATE.WORK;

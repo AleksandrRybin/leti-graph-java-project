@@ -4,7 +4,7 @@ class DFSChecker {
     private final int[][] indMatrix;
     private final boolean[] visited;
 
-    public Checker(Graph graph) {
+    public DFSChecker(Graph graph) {
         this.indMatrix = graph.getIndMatrix();
         visited = new boolean[indMatrix.length];
     }
@@ -26,7 +26,7 @@ class DFSChecker {
         return false;
     }
 
-    private boolean CheckCycle() {
+    boolean CheckCycle() {
         for (int u = 0; u < indMatrix.length; u++) {
             if (visited[u] == false) {
                 if (dfs(u)) {

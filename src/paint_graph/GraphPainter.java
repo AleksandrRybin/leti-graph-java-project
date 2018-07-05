@@ -8,17 +8,19 @@ import java.awt.*;
 
 
 public class GraphPainter {
-
     private final GraphPanel graphpanel;
 
-    public GraphPainter(GraphVisualizationWindow _window, Graph graph){
+    public GraphPainter(Graph graph){
 
         this.graphpanel = new GraphPanel(graph);
 
         // TODO: get Panel from window or create _window.setPanel(graphpanel);
     }
 
-	
+    public GraphPanel getGraphpanel() {
+        return graphpanel;
+    }
+
 	// TODO: Compatibility
     public void fillVertex(int node){
         graphpanel.changeColorOfNode(node);

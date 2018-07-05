@@ -106,6 +106,7 @@ public class GraphPanel extends JPanel  {
     }
 	
     public void changeColorOfNode(int node){
+        System.out.println("must change color");
         Color green = new Color(0,255,0);
         nodes[node].setColor(green);
 

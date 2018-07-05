@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.Vector;
 
+import business_logic.Graph;
+
 /**
  * Start Window
  * @author Grigoriev Ivan
@@ -23,6 +25,7 @@ public class MainWindow extends JFrame {
     private JButton getGraphFromFileButton;
     private JButton generateRandomGraphWithButton;
 
+
     public MainWindow() {
         super("LETI project");
 
@@ -31,13 +34,14 @@ public class MainWindow extends JFrame {
         getGraphFromFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getGraphFromFile();
-                goToGraphVisualizationWindow();
+                Graph graph = getGraphFromFile();
+                if(graph != null)
+                    goToGraphVisualizationWindow(graph);
             }
         });
     }
 
-    private void getGraphFromFile() {
+    private Graph getGraphFromFile() {
         JFileChooser file_chooser = new JFileChooser();
 
         file_chooser.setCurrentDirectory(new File("."));
@@ -47,7 +51,7 @@ public class MainWindow extends JFrame {
 
         int ret = file_chooser.showOpenDialog(this);
         if (ret != JFileChooser.APPROVE_OPTION) {
-            return;
+            return null;
         }
         File file = file_chooser.getSelectedFile();
 
@@ -64,17 +68,17 @@ public class MainWindow extends JFrame {
                 }
                 incidencde_list.add(tmp_vector);
             }
-            //TODO return createGraph(incidencde_list);
+            return createGraph(incidencde_list);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this,
                     "File is incorrect.",
                     "Format error",
                     JOptionPane.ERROR_MESSAGE);
         }
-
+        return null;
     }
 
-    private /*TODO Graph*/ void createGraph(Vector<Vector<String>> incidencde_list) {
+    private Graph createGraph(Vector<Vector<String>> incidencde_list) {
         int m_size = incidencde_list.size(); //размер квадратной матрицы
         int[][] inc_matrix = new int[m_size][m_size]; //матрица инц.
         String[] node_names = new String[m_size]; //массив имен вершин
@@ -88,7 +92,7 @@ public class MainWindow extends JFrame {
             inc_matrix[i][i] = 0;
         }
 
-        //TODO return new Graph(inc_matrix, node_names);
+        return new Graph(inc_matrix, node_names);
 
     }
 
@@ -100,7 +104,7 @@ public class MainWindow extends JFrame {
         return -1;
     }
 
-    private /*TODO Graph*/ void createRandomGraph() {
+    /*TODO private Graph createRandomGraph() {
         int vertexNum = Integer.parseInt(textFieldVertexNum.getText());
         int edgeNum = Integer.parseInt(textFieldEdgeNum.getText());
         if(!checkForCorrectInput(vertexNum, edgeNum)) {
@@ -109,8 +113,8 @@ public class MainWindow extends JFrame {
         for (int i = 0; i < vertexNum; i++) {
 
         }
-        //TODO return new Graph(inc_matrix, node_names);
-    }
+        return new Graph(inc_matrix, node_names);
+    }*/
 
     private boolean checkForCorrectInput(int vertexNum, int edgeNum) {
         int maxEdges = vertexNum * (vertexNum - 1);
@@ -146,10 +150,10 @@ public class MainWindow extends JFrame {
         return true;
     }
 
-    private void goToGraphVisualizationWindow() {
+    private void goToGraphVisualizationWindow(Graph graph) {
         closeMainWindow();
 
-        GraphVisualizationWindow graphVisualizationWindow = new GraphVisualizationWindow();
+        GraphVisualizationWindow graphVisualizationWindow = new GraphVisualizationWindow(graph);
 
         graphVisualizationWindow.pack(); //упаковываем все элементы с нашей формы
         graphVisualizationWindow.setSize(new Dimension(700, 600));
