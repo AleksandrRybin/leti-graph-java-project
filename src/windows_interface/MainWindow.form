@@ -30,7 +30,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Edge's num (max 30):"/>
+          <text value="Edge's num (max 10):"/>
           <verticalAlignment value="0"/>
         </properties>
       </component>
@@ -41,7 +41,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Vertexe's num (max 30):"/>
+          <text value="Vertexe's num (max 20):"/>
         </properties>
       </component>
       <component id="dc60b" class="javax.swing.JTextField" binding="textFieldEdgeNum" default-binding="true">
