@@ -1,44 +1,33 @@
 package business_logic;
 
-
 import paint_graph.GraphPainter;
 
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.ArrayDeque;
-import java.util.List;
-
+import java.util.*;
 
 public class Sorter {
     private final int[][] indMatrix;
     private final GraphPainter painter;
-    private List<Integer> res;
     private Deque<Integer> stk;
     private boolean[] visited;
     private int current;
     private int from;
     private STATE state;
 
-
     public Sorter(Graph graph, GraphPainter painter) {
         DFSChecker checker = new DFSChecker(graph);
         if (checker.CheckCycle()) {
             this.state = STATE.ERROR;
+
+            //TODO throw exception?
         }
 
         this.indMatrix = graph.getIndMatrix();
         this.painter = painter;
-        this.res = new LinkedList<>();
         this.stk = new ArrayDeque<>();
         this.visited = new boolean[indMatrix.length];
         this.current = 0;
         this.from = -1;
-        this.state = STATE.INIT;
-    }
-
-    public List getResult() {
-        java.util.Collections.reverse(res);
-        return res;
+        this.state = STATE.WORK;
     }
 
     public STATE getState() {
@@ -89,5 +78,4 @@ public class Sorter {
             state = STATE.END;
         }
     }
-
 }
