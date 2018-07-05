@@ -5,11 +5,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 
+import business_logic.Checker;
 import business_logic.Graph;
 
 /**
@@ -27,7 +31,7 @@ public class MainWindow extends JFrame {
 
 
     public MainWindow() {
-        super("LETI project");
+        super("Topological sorting of a graph");
 
         this.getContentPane().add(panel);
 
@@ -35,8 +39,25 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Graph graph = getGraphFromFile();
-                if(graph != null)
-                    goToGraphVisualizationWindow(graph);
+                if(graph != null) {
+                    Checker checker = new Checker(graph);
+                    if(checker.CheckCycle())
+                        goToGraphVisualizationWindow(graph);
+                    else {
+                        JOptionPane.showMessageDialog(panel,
+                                "Graph contains cycles",
+                                "Graph error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+
+        generateRandomGraphWithButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Graph graph = createRandomGraph();
+                goToGraphVisualizationWindow(graph);
             }
         });
     }
@@ -80,6 +101,15 @@ public class MainWindow extends JFrame {
 
     private Graph createGraph(Vector<Vector<String>> incidencde_list) {
         int m_size = incidencde_list.size(); //размер квадратной матрицы
+
+        if(m_size > 10) {
+            JOptionPane.showMessageDialog(this,
+                    "File is incorrect.",
+                    "Format error",
+                    JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+
         int[][] inc_matrix = new int[m_size][m_size]; //матрица инц.
         String[] node_names = new String[m_size]; //массив имен вершин
 
@@ -104,20 +134,43 @@ public class MainWindow extends JFrame {
         return -1;
     }
 
-    /*TODO private Graph createRandomGraph() {
-        int vertexNum = Integer.parseInt(textFieldVertexNum.getText());
-        int edgeNum = Integer.parseInt(textFieldEdgeNum.getText());
-        if(!checkForCorrectInput(vertexNum, edgeNum)) {
-            //TODO return null;
-        }
-        for (int i = 0; i < vertexNum; i++) {
+    private Graph createRandomGraph() {
+        int vertexNum = Integer.parseInt(textFieldEdgeNum.getText());
+        int edgeNum = Integer.parseInt(textFieldVertexNum.getText());
 
+        if(!checkForCorrectInput(vertexNum, edgeNum)) {
+            return null;
         }
-        return new Graph(inc_matrix, node_names);
-    }*/
+
+        int[][] inc_matrix = new int[vertexNum][vertexNum]; //матрица инц.
+        String[] node_names = new String[vertexNum]; //массив имен вершин
+
+        String alphabet = new String("abcdefghijklmnopqrstuvwxyz");
+        for (int i = 0; i < vertexNum; i++) //получаем имена
+            node_names[i] = String.valueOf(alphabet.charAt(i));
+
+        Checker checker;
+        Graph graph;
+        Random rnd = new Random(System.currentTimeMillis());
+        do {
+            for (int i = 0; i < vertexNum; i++) {
+                for (int j = 0; j < vertexNum; j++) {
+                    int rand_int = rnd.nextInt(101) % 2; //0 or 1
+                    if(rand_int == 1 && edgeNum != 0 && i != j) {
+                        inc_matrix[i][j] = rand_int;
+                        edgeNum--;
+                    }
+                }
+            }
+            graph = new Graph(inc_matrix, node_names);
+            checker = new Checker(graph);
+        } while (!checker.CheckCycle());
+
+        return graph;
+    }
 
     private boolean checkForCorrectInput(int vertexNum, int edgeNum) {
-        int maxEdges = vertexNum * (vertexNum - 1);
+        int maxEdges = vertexNum * (vertexNum - 1) / 2;
         int minEdges = vertexNum - 1;
         if (vertexNum > 10 || vertexNum <= 0) {
             JOptionPane.showMessageDialog(this,
@@ -128,7 +181,7 @@ public class MainWindow extends JFrame {
         }
         if (edgeNum > 20 || edgeNum <= 0) {
             JOptionPane.showMessageDialog(this,
-                    "0 < Edg number <= 10.",
+                    "0 < Edge number <= 20.",
                     "Incorrect input",
                     JOptionPane.ERROR_MESSAGE);
             return false;
@@ -168,7 +221,6 @@ public class MainWindow extends JFrame {
     }
 
     private void closeMainWindow() {
-        removeAll();
         setVisible(false);
         dispose();
     }
