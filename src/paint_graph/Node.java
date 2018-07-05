@@ -17,7 +17,7 @@ class Node {
         x = _x;
         y = _y;
         name = _name;
-        radius = 30;
+        radius = 42;
         colorNode = new Color(255,235,0);
         textSize = 20;
     }
@@ -33,6 +33,7 @@ class Node {
     public void setColor(Color newColor){
         colorNode = newColor;
     }
+
     public Color getColor(){
         return colorNode;
     }
@@ -60,6 +61,7 @@ class Node {
     public int getRadius() {
         return radius;
     }
+
     public int getTextSize(){
         return textSize;
     }
