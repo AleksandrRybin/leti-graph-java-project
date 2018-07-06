@@ -15,7 +15,12 @@ public class Checker {
         for (int v = 0; v < indMatrix[u].length; v++) {
             if (indMatrix[u][v] != 0) {
                 if (visited[v] == false) {
-                    dfs(v);
+                    boolean isCycleByNextVertex = dfs(v);
+
+                    if (isCycleByNextVertex){
+                        return true;
+                    }
+
                 }
                 else {
                     return true;
@@ -26,7 +31,7 @@ public class Checker {
         return false;
     }
 
-    public boolean CheckCycle() {
+    public boolean isCycle() {
         for (int u = 0; u < indMatrix.length; u++) {
             if (visited[u] == false) {
                 if (dfs(u)) {
