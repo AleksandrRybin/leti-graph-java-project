@@ -5,16 +5,14 @@ import business_logic.Graph;
 import business_logic.STATE;
 import business_logic.Sorter;
 import paint_graph.GraphPainter;
-import paint_graph.GraphPanel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 /**
  * Window with loaded graph and alghoritm visualization
  * @author Grigoriev Ivan
- * @version 1.1
  */
 
 public class GraphVisualizationWindow extends JFrame {
