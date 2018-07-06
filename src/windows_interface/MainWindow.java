@@ -145,17 +145,19 @@ public class MainWindow extends JFrame {
         int[][] inc_matrix = new int[vertexNum][vertexNum]; //матрица инц.
         String[] node_names = new String[vertexNum]; //массив имен вершин
 
-        String alphabet = new String("abcdefghijklmnopqrstuvwxyz");
+        String alphabet = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         for (int i = 0; i < vertexNum; i++) //получаем имена
             node_names[i] = String.valueOf(alphabet.charAt(i));
 
         Checker checker;
         Graph graph;
-        Random rnd = new Random(System.currentTimeMillis());
+
         do {
+            Random rnd = new Random(System.currentTimeMillis());
+
             for (int i = 0; i < vertexNum; i++) {
                 for (int j = 0; j < vertexNum; j++) {
-                    int rand_int = rnd.nextInt(101) % 2; //0 or 1
+                    int rand_int = rnd.nextInt() % 2; //0 or 1
                     if(rand_int == 1 && edgeNum != 0 && i != j) {
                         inc_matrix[i][j] = rand_int;
                         edgeNum--;
