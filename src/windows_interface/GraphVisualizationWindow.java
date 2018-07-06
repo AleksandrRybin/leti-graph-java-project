@@ -42,15 +42,10 @@ public class GraphVisualizationWindow extends JFrame {
                 }
             }
         });
+        
         next.add(nextButton);
 
         add(graphPainter.getGraphpanel());
         add(next, BorderLayout.SOUTH);
-
-
-
-        //TODO getState error check
-
-
-}
+    }
 }

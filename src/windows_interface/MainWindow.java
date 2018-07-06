@@ -41,7 +41,7 @@ public class MainWindow extends JFrame {
                 Graph graph = getGraphFromFile();
                 if(graph != null) {
                     Checker checker = new Checker(graph);
-                    if(checker.CheckCycle())
+                    if(!checker.isCycle())
                         goToGraphVisualizationWindow(graph);
                     else {
                         JOptionPane.showMessageDialog(panel,
@@ -164,7 +164,7 @@ public class MainWindow extends JFrame {
             }
             graph = new Graph(inc_matrix, node_names);
             checker = new Checker(graph);
-        } while (!checker.CheckCycle());
+        } while (checker.isCycle());
 
         return graph;
     }
