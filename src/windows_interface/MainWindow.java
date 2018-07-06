@@ -5,8 +5,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -19,12 +17,10 @@ import business_logic.Graph;
 /**
  * Start Window
  * @author Grigoriev Ivan
- * @version 1.1
  */
 
 public class MainWindow extends JFrame {
     private JPanel panel;
-    private JTextField textFieldEdgeNum;
     private JTextField textFieldVertexNum;
     private JButton getGraphFromFileButton;
     private JButton generateRandomGraphWithButton;
@@ -104,8 +100,8 @@ public class MainWindow extends JFrame {
 
         if(m_size > 10) {
             JOptionPane.showMessageDialog(this,
-                    "File is incorrect.",
-                    "Format error",
+                    "Vertexes num must be <= 10",
+                    "Graph error",
                     JOptionPane.ERROR_MESSAGE);
             return null;
         }
@@ -135,14 +131,12 @@ public class MainWindow extends JFrame {
     }
 
     private Graph createRandomGraph() {
-        int vertexNum = Integer.parseInt(textFieldEdgeNum.getText());
-        int edgeNum = Integer.parseInt(textFieldVertexNum.getText());
+        int vertexNum = Integer.parseInt(textFieldVertexNum.getText());
 
-        if(!checkForCorrectInput(vertexNum, edgeNum)) {
+        if(!checkForCorrectInput(vertexNum)) {
             return null;
         }
 
-        int[][] inc_matrix = new int[vertexNum][vertexNum]; //матрица инц.
         String[] node_names = new String[vertexNum]; //массив имен вершин
 
         String alphabet = new String("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -151,17 +145,14 @@ public class MainWindow extends JFrame {
 
         Checker checker;
         Graph graph;
-
+        Random rnd = new Random(System.currentTimeMillis());
         do {
-            Random rnd = new Random(System.currentTimeMillis());
-
+            int[][] inc_matrix = new int[vertexNum][vertexNum]; //матрица инц.
             for (int i = 0; i < vertexNum; i++) {
                 for (int j = 0; j < vertexNum; j++) {
                     int rand_int = rnd.nextInt() % 2; //0 or 1
-                    if(rand_int == 1 && edgeNum != 0 && i != j) {
+                    if(rand_int == 1 && i != j)
                         inc_matrix[i][j] = rand_int;
-                        edgeNum--;
-                    }
                 }
             }
             graph = new Graph(inc_matrix, node_names);
@@ -171,33 +162,12 @@ public class MainWindow extends JFrame {
         return graph;
     }
 
-    private boolean checkForCorrectInput(int vertexNum, int edgeNum) {
+    private boolean checkForCorrectInput(int vertexNum) {
         int maxEdges = vertexNum * (vertexNum - 1) / 2;
         int minEdges = vertexNum - 1;
         if (vertexNum > 10 || vertexNum <= 0) {
             JOptionPane.showMessageDialog(this,
                     "0 < Vertex number <= 10.",
-                    "Incorrect input",
-                    JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (edgeNum > 20 || edgeNum <= 0) {
-            JOptionPane.showMessageDialog(this,
-                    "0 < Edge number <= 20.",
-                    "Incorrect input",
-                    JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (edgeNum > maxEdges) {
-            JOptionPane.showMessageDialog(this,
-                    "Too many edges for " + vertexNum + " vertexes.",
-                    "Incorrect input",
-                    JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        if (edgeNum < minEdges) {
-            JOptionPane.showMessageDialog(this,
-                    "Too few edges for " + vertexNum + " vertexes.",
                     "Incorrect input",
                     JOptionPane.ERROR_MESSAGE);
             return false;
