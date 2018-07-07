@@ -2,11 +2,11 @@ package business_logic;
 
 public class Checker {
     private final int[][] indMatrix;
-    private int[] visited;
+    private DFSState[] visited;
 
     public Checker(Graph graph) {
         this.indMatrix = graph.getIndMatrix();
-        visited = new int[indMatrix.length];
+        visited = new DFSSTATE[indMatrix.length];
 
         for (int i = 0; i < visited.length; i++) {
             visited[i] = DFSSTATE.WHITE;
