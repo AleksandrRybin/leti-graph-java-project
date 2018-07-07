@@ -6,10 +6,10 @@ public class Checker {
 
     public Checker(Graph graph) {
         this.indMatrix = graph.getIndMatrix();
-        visited = new DFSSTATE[indMatrix.length];
+        visited = new DFSState[indMatrix.length];
 
         for (int i = 0; i < visited.length; i++) {
-            visited[i] = DFSSTATE.WHITE;
+            visited[i] = DFSState.WHITE;
         }
     }
 
@@ -18,26 +18,26 @@ public class Checker {
 
         for (int v = 0; v < indMatrix[u].length; v++) {
             if (indMatrix[u][v] != 0) {
-                if (visited[v] == DFSSTATE.WHITE) {
+                if (visited[v] == DFSState.WHITE) {
                     boolean isCycleByNextVertex = dfs(v);
 
                     if (isCycleByNextVertex){
                         return true;
                     }
                 }
-                else if (visited[v] == DFSSTATE.GREY){
+                else if (visited[v] == DFSState.GREY){
                     return true;
                 }
             }
         }
 
-        visited[u] == DFSState.BLACK;
+        visited[u] = DFSState.BLACK;
         return false;
     }
 
     public boolean isCycle() {
         for (int u = 0; u < indMatrix.length; u++) {
-            if (visited[u] == DFSSTATE.WHITE) {
+            if (visited[u] == DFSState.WHITE) {
                 if (dfs(u)) {
                     return true;
                 }
